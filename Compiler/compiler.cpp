@@ -33,21 +33,21 @@ std::unordered_map<std::string, std::string> RegisterMapping {
 
 std::unordered_map<std::string, std::string> ArithmeticOperationMapping {
     {"and", "0000"},
-    {"nand", "0001"},
-    {"or", "0010"},
-    {"nor", "0011"},
-    {"xor", "0100"},
-    {"xnor", "0101"},
-    {"not", "0110"},
-    {"neg", "0111"},
-    {"add", "1000"},
-    {"sub", "1001"},  
-    {"mul", "1010"},
-    {"div", "1011"},
-    {"inc", "1100"},
-    {"dec", "1101"},
-    {"shl", "1110"},
-    {"shr", "1111"}
+    {"or", "0001"},
+    {"xor", "0010"},
+    {"not", "0011"},
+    {"neg", "0100"},
+    {"add", "0101"},
+    {"sub", "0110"},  
+    {"mul", "0111"},
+    {"div", "1000"},
+    {"inc", "1001"},
+    {"dec", "1010"},
+    {"shl", "1011"},
+    {"shr", "1100"},
+    {"cmp", "1101"},
+    {"sar", "1110"},
+    {"ror", "1111"}
 };
 
 std::unordered_map<std::string, unsigned int> CompilerVariables;
