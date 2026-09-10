@@ -1,5 +1,3 @@
-// A faster compiler with the new ALU logic
-
 #include <iostream>
 
 #include <unordered_map>
@@ -14,10 +12,18 @@ std::unordered_map<std::string, std::string> OpCodeMapping {
     {"str", "00001"},
     {"dbnxt", "00010"},
     {"swp", "00011"},
-    {"arithmetic", "00100"},
-    {"jmp", "00101"},
-    {"jz", "00110"},
-    {"end", "00111"},
+    {"add", "00100"},
+    {"sub", "00101"},
+    {"inc", "00110"},
+    {"dec", "00111"},
+    {"and", "01000"},
+    {"or", "01001"},
+    {"xor", "01010"},
+    {"not", "01011"},
+    {"neg", "01100"},
+    {"jmp", "01101"},
+    {"jz", "01110"},
+    {"end", "01111"},
 };
 
 std::unordered_map<std::string, std::string> RegisterMapping {
@@ -31,36 +37,15 @@ std::unordered_map<std::string, std::string> RegisterMapping {
     {"R7", "111"}    
 };
 
-std::unordered_map<std::string, std::string> ArithmeticOperationMapping {
-    {"and", "0000"},
-    {"nand", "0001"},
-    {"or", "0010"},
-    {"nor", "0011"},
-    {"xor", "0100"},
-    {"xnor", "0101"},
-    {"not", "0110"},
-    {"neg", "0111"},
-    {"add", "1000"},
-    {"sub", "1001"},  
-    {"mul", "1010"},
-    {"div", "1011"},
-    {"inc", "1100"},
-    {"dec", "1101"},
-    {"shl", "1110"},
-    {"shr", "1111"}
-};
-
 std::unordered_map<std::string, unsigned int> CompilerVariables;
 
-std::ifstream inputFile {"Assembly/main.rasm"};
-std::ofstream outputFile {"Compiled/compiled.bin", std::ios::trunc};
-
-bool arithmetic = false;
+std::ifstream inputFile {"main.rasm"};
+std::ofstream outputFile {"compiled.bin", std::ios::trunc};
 
 void BuildBinary(const std::string& word, std::string& binary)
 {
     auto isOpCode = OpCodeMapping.find(word);
-    auto isArithmetic = ArithmeticOperationMapping.find(word);
+    auto isRegister = RegisterMapping.find(word);
 
     if (isOpCode != OpCodeMapping.end())
     {
@@ -75,10 +60,6 @@ void BuildBinary(const std::string& word, std::string& binary)
         }
 
         binary = OpCodeMapping[word];
-    }
-    else if (isArithmetic != ArithmeticOperationMapping.end())
-    {
-        binary += ArithmeticOperationMapping[word];
     }
     else
     {
