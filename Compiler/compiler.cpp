@@ -16,7 +16,7 @@ std::unordered_map<std::string, std::string> OpCodeMapping {
     {"swp", "00011"},
     {"arithmetic", "00100"},
     {"jmp", "00101"},
-    {"jz", "00110"},
+    {"je", "00110"},
     {"end", "00111"},
 };
 
