@@ -1,8 +1,16 @@
-dbnxt R7 @0000000010001100
+label $start
+    db R7 @100
+    db R1 @1
 
-dbnxt R1 @0000000000000001
+    arithmetic inc R7
+    str R7 R1
 
-arithmetic inc R7
-str R7 R1
+    jmp parttwo
+
+label $parttwo
+    db R6 @11
+    db R2 @2
+
+    str R6 R2
 
 end

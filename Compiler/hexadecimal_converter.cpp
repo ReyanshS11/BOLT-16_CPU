@@ -15,6 +15,8 @@ int main()
 
     std::string byte;
 
+    outputFile << "v2.0 raw" << "\n";
+
     while (ss >> byte)
     {
         unsigned long long decimal = std::stoull(byte, nullptr, 2);

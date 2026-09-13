@@ -9,10 +9,12 @@
 
 #include <cstdint>
 
+#include <bitset>
+
 std::unordered_map<std::string, std::string> OpCodeMapping {
     {"ldr", "00000"},
     {"str", "00001"},
-    {"dbnxt", "00010"},
+    {"db", "00010"},
     {"swp", "00011"},
     {"arithmetic", "00100"},
     {"jmp", "00101"},
@@ -50,7 +52,7 @@ std::unordered_map<std::string, std::string> ArithmeticOperationMapping {
     {"ror", "1111"}
 };
 
-std::unordered_map<std::string, unsigned int> CompilerVariables;
+std::unordered_map<std::string, std::string> CompilerVariables;
 
 std::ifstream inputFile {"Assembly/main.rasm"};
 std::ofstream outputFile {"Compiled/compiled.bin", std::ios::trunc};
@@ -94,10 +96,11 @@ int main()
     std::string word;
     std::string binary;
 
-    while (ss >> word) {
-        int isNonCommandValue = word.find('@');
+    int lines = 0;
 
-        if (isNonCommandValue == 0)
+    while (ss >> word)
+    {
+        if (word.find('@') == 0)
         {
             while (binary.size() < 16)
             {
@@ -105,11 +108,21 @@ int main()
             }
 
             outputFile << binary << "\n";
-            outputFile << word.substr(1) << "\n";
+
+            std::bitset<16> binaryWord {std::stoi(word.erase(0, 1))};
+
+            outputFile << binaryWord.to_string() << "\n";
+
+            lines += 2;
 
             binary = "";
 
             continue;
+        }
+        else if (word.find("$") == 0)
+        {
+            std::bitset<15> address {lines};
+            CompilerVariables[word.erase(0, 1)] = address.to_string();
         }
 
         BuildBinary(word, binary);
@@ -121,6 +134,8 @@ int main()
     }
         
     outputFile << binary << "\n";
+
+    lines += 1;
 
     outputFile.close();
 }
