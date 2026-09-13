@@ -20,6 +20,7 @@ std::unordered_map<std::string, std::string> OpCodeMapping {
     {"jmp", "00101"},
     {"jz", "00110"},
     {"end", "00111"},
+    {"label", "01000"}
 };
 
 std::unordered_map<std::string, std::string> RegisterMapping {
@@ -88,15 +89,38 @@ void BuildBinary(const std::string& word, std::string& binary)
     }
 }
 
+void findLabels()
+{
+    std::string line;
+
+    int address = 0;
+
+    while (std::getline(inputFile, line))
+    {
+        if (line.find("label") != std::string::npos)
+        {
+            std::bitset<16> binaryAddress {address};
+            CompilerVariables[line.erase(0, 7)] = binaryAddress.to_string();
+        }
+
+        address++;
+    }
+
+    inputFile.clear();
+    inputFile.seekg(0);
+}
+
 int main()
 {
+    findLabels();
+
     std::stringstream ss;
     ss << inputFile.rdbuf();
 
     std::string word;
     std::string binary;
 
-    int lines = 0;
+    bool skip = false;
 
     while (ss >> word)
     {
@@ -113,16 +137,29 @@ int main()
 
             outputFile << binaryWord.to_string() << "\n";
 
-            lines += 2;
-
             binary = "";
 
             continue;
         }
-        else if (word.find("$") == 0)
-        {
-            std::bitset<15> address {lines};
-            CompilerVariables[word.erase(0, 1)] = address.to_string();
+        else if (word.find('$') == 0)
+        {            
+            while (binary.size() < 16)
+            {
+                binary += "0";
+            }
+
+            outputFile << binary << "\n";
+
+            if (binary == "0100000000000000")
+            {
+                continue;
+            }
+
+            outputFile << CompilerVariables[word.erase(0, 1)] << "\n";
+
+            binary = "";
+
+            continue;
         }
 
         BuildBinary(word, binary);
@@ -134,8 +171,6 @@ int main()
     }
         
     outputFile << binary << "\n";
-
-    lines += 1;
 
     outputFile.close();
 }

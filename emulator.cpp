@@ -27,7 +27,7 @@ std::unordered_map<std::string, std::string> RegisterMapping {
 
 std::unordered_map<int, std::string> DataMemory;
 
-std::unordered_map<std::string, std::string> CompilerVariables;
+std::unordered_map<std::string, int> CompilerVariables;
 
 int main()
 {
@@ -43,12 +43,33 @@ int main()
     std::string line;
 
     bool jumptoAddress = false;
-    std::string labeltoJump;
+    int addressToJump;
 
     std::string previousOperationOutput;
-    
+
+    std::vector<std::string> lines;
+
     while (std::getline(inputFile, line))
     {
+        if (line.empty())
+        {
+            continue;
+        }
+
+        lines.emplace_back(line);
+
+        if (line.find("label") != std::string::npos)
+        {
+            CompilerVariables[line.erase(0, 7)] = lineAddress;
+        }
+
+        lineAddress++;
+    }
+    
+    for (int i = 0; i < lines.size(); i++)
+    {
+        line = lines[i];
+
         std::istringstream ss {line};
 
         std::string arg;
@@ -58,21 +79,10 @@ int main()
             args.push_back(arg);
         }
 
-        if (args.empty())
-        {
-            continue;
-        }
-
         if (jumptoAddress)
         {
-            if (labeltoJump != args[1].erase(0, 1))
-            {
-                continue;
-            }
-            else
-            {
-                jumptoAddress = false;
-            }
+            i = addressToJump - 1;
+            jumptoAddress = false;
         }
 
         if (args[0] == "ldr")
@@ -252,21 +262,20 @@ int main()
         }
         else if (args[0] == "jmp")
         {
-            labeltoJump = args[1];
+            addressToJump = CompilerVariables[args[1].erase(0, 1)];
             jumptoAddress = true;
         }
         else if (args[0] == "jz")
         {
             if (previousOperationOutput == "0000000000000000")
             {
-                labeltoJump = args[1];
+                addressToJump = CompilerVariables[args[1].erase(0, 1)];
                 jumptoAddress = true;
             }
         }
         else if (args[0] == "label")
         {
-            std::bitset<15> address {lineAddress};
-            CompilerVariables[args[1].erase(0, 1)] = address.to_string();
+            continue;
         }
         else
         {
@@ -281,7 +290,6 @@ int main()
             }
         }
 
-        lineAddress++;
     }
 
     for (const auto& [key, value] : DataMemory) {

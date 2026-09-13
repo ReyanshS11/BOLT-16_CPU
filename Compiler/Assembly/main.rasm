@@ -5,7 +5,7 @@ label $start
     arithmetic inc R7
     str R7 R1
 
-    jmp parttwo
+    jmp $parttwo
 
 label $parttwo
     db R6 @11
