@@ -100,11 +100,10 @@ int main()
             std::bitset<16> binaryWord {std::stoi(args[2].erase(0, 1))};
             RegisterMapping[args[1]] = binaryWord.to_string();
         }
-        else if (args[0] == "swp")
+        else if (args[0] == "sb")
         {
-            std::string temp = RegisterMapping[args[1]];
-            RegisterMapping[args[1]] = RegisterMapping[args[2]];
-            RegisterMapping[args[2]] = temp;
+            int address = std::stoi(RegisterMapping[args[1]], nullptr, 2);
+            DataMemory[address] = std::bitset<16>(std::stoull(args[2].erase(0, 1))).to_string();
         }
         else if (args[0] == "arithmetic")
         {
@@ -276,6 +275,10 @@ int main()
         else if (args[0] == "label")
         {
             continue;
+        }
+        else if (args[0] == "clear")
+        {
+            RegisterMapping[args[1]] = "0000000000000000";
         }
         else
         {

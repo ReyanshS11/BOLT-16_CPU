@@ -15,12 +15,13 @@ std::unordered_map<std::string, std::string> OpCodeMapping {
     {"ldr", "00000"},
     {"str", "00001"},
     {"db", "00010"},
-    {"swp", "00011"},
+    {"sb", "00011"},
     {"arithmetic", "00100"},
     {"jmp", "00101"},
     {"jz", "00110"},
-    {"end", "00111"},
-    {"label", "01000"}
+    {"clear", "00111"},
+    {"end", "01000"},
+    {"label", "01001"}
 };
 
 std::unordered_map<std::string, std::string> RegisterMapping {
