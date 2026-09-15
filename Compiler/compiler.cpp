@@ -1,5 +1,3 @@
-// A faster compiler with the new ALU logic
-
 #include <iostream>
 
 #include <unordered_map>
