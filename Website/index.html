@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head lang="en-us">
+    <meta charset="utf-8">
+    <title>BOLT-16 CPU Emulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+  </head>
+
+  <body>
+    
+    <nav id="taskbar">
+      <h2>BOLT-16 CPU Emulator</h2>
+    </nav>
+
+    <div class="codearea">
+      <textarea id="code" autocomplete="off" spellcheck="false" placeholder="Write your assembly code here"></textarea>
+
+      <button id="runcodebutton" onclick="runCode()">
+        <img id="btn-icon" src="Assets/play-solid-full.svg" alt="" aria-hidden="true">
+        Run Code
+      </button>
+    </div>
+
+    <div id="codeoutput"></div>
+    
+  </body>
+
+</html>

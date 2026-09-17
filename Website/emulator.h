@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 
 #include <cstdlib>
@@ -12,29 +14,28 @@
 #include <bitset>
 #include <bit>
 
-std::ifstream inputFile {"Compiler/Assembly/main.rasm"};
-
-std::unordered_map<std::string, std::string> RegisterMapping {
-    {"R0", "0000000000000000"},
-    {"R1", "0000000000000000"},
-    {"R2", "0000000000000000"},
-    {"R3", "0000000000000000"},
-    {"R4", "0000000000000000"},
-    {"R5", "0000000000000000"},
-    {"R6", "0000000000000000"},
-    {"R7", "0000000000000000"}    
-};
-
-std::unordered_map<int, std::string> DataMemory;
-
-std::unordered_map<std::string, int> CompilerVariables;
-
-int main()
+std::unordered_map<int, std::string> RunCode()
 {
+    std::ifstream inputFile {"Compiler/Assembly/main.rasm"};
+
+    std::unordered_map<std::string, std::string> RegisterMapping {
+        {"R0", "0000000000000000"},
+        {"R1", "0000000000000000"},
+        {"R2", "0000000000000000"},
+        {"R3", "0000000000000000"},
+        {"R4", "0000000000000000"},
+        {"R5", "0000000000000000"},
+        {"R6", "0000000000000000"},
+        {"R7", "0000000000000000"}    
+    };
+
+    std::unordered_map<int, std::string> DataMemory;
+
+    std::unordered_map<std::string, int> CompilerVariables;
+
     if (!inputFile.is_open())
     {
         std::cout << "Failed to open assembly file\n";
-        return 1;
     }
 
     std::cout << "Assembly file opened\n";
@@ -58,7 +59,7 @@ int main()
 
         lines.emplace_back(line);
 
-        if (line.find("label") != std::string::npos)
+        if (line.find("label") == 0)
         {
             CompilerVariables[line.erase(0, 7)] = lineAddress;
         }
@@ -295,7 +296,5 @@ int main()
 
     }
 
-    for (const auto& [key, value] : DataMemory) {
-        std::cout << key << ": " << value << "\n";
-    }
+    return DataMemory;
 }

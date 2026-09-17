@@ -1,0 +1,133 @@
+body {
+  background-color: aliceblue; 
+  
+  background-size: 40px 40px; 
+}
+
+#taskbar {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+
+    position: relative;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    background-color: gold;
+
+    height: 50px;
+
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.75);
+
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+}
+
+.codearea {
+    display: inline-block;
+    position: relative;
+}
+
+#code {
+    position: absolute;
+
+    background-color: white;
+
+    height: 500px;
+    width: 400px;
+
+    border: 1px solid black;
+    border-radius: 6px;
+
+    font-size: 16px;
+
+    margin-top: 50px;
+
+    align-items: center;
+}
+
+#runcodebutton {
+    margin-top: 560px;
+
+    background-color: red;
+
+    color: white;
+
+    border: 1px solid black;
+    border-radius: 6px;
+
+    width: 406px;
+    height: 40px;
+
+    font-size: medium;
+
+    cursor: pointer;
+}
+
+#btn-icon {
+    width: 20px;  
+    height: 20px;
+    
+    display: inline-block; 
+    flex-shrink: 0;
+    
+    fill: currentColor;
+
+    filter: invert(100%)
+}
+
+#codeoutput {
+    margin-top: -530px;
+    margin-left: 500px;
+
+    position: absolute;
+
+    width: 400px;
+    height: 500px;
+
+    background-color: white;
+
+    color: black;
+
+    border: 1px solid black;
+    border-radius: 6px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    
+    column-gap: 20px; 
+    align-content: start;
+
+    z-index: 10;
+}
+
+#codeoutput p {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+    border-bottom: 1px solid black; 
+}
+
+#codeoutput::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    
+    left: 50%; 
+    
+    border-left: 1px solid black; 
+    
+    pointer-events: none; 
+}
+
+p {
+    margin-left: 10px;
+    margin-right: 10px;
+}

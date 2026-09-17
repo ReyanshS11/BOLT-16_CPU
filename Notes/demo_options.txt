@@ -1,0 +1,8 @@
+Possible ideas for hosting:
+    1. Create a container for Logisim and run it on a website
+    2. Find a terminal command that can run Logisim in the background and return the value
+    3. Build a replica of the Logisim screen in OpenGL by reading the RAM
+    4. Build an emulator and run it on a website
+    5. Make the user download Logism and compile and run the code locally
+
+Option #4 --> Host on Github Pages
