@@ -229,9 +229,10 @@ function runCode() {
     sortedDataMemory.forEach((value, address) => {
         const newP = document.createElement("p");
         newP.textContent = `${address.toString().padStart(4, '0')}: ${value}`;
-
         outputDiv.appendChild(newP);
-    });
 
-    outputDiv.sort
+        const newP2 = document.createElement("p");
+        newP2.textContent = `${address.toString().padStart(4, '0')}: ${parseInt(value, 2)}`;
+        outputDiv.appendChild(newP2);
+    });
 }

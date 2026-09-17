@@ -1,7 +1,7 @@
 body {
   background-color: aliceblue; 
   
-  background-size: 40px 40px; 
+  background-size: 40px 40px;
 }
 
 #taskbar {
@@ -47,12 +47,14 @@ body {
     font-size: 16px;
 
     margin-top: 50px;
+    margin-left: 300px;
 
     align-items: center;
 }
 
 #runcodebutton {
     margin-top: 560px;
+    margin-left: 300px;
 
     background-color: red;
 
@@ -83,7 +85,7 @@ body {
 
 #codeoutput {
     margin-top: -530px;
-    margin-left: 500px;
+    margin-left: 800px;
 
     position: absolute;
 
@@ -102,8 +104,6 @@ body {
     
     column-gap: 20px; 
     align-content: start;
-
-    z-index: 10;
 }
 
 #codeoutput p {
@@ -130,4 +130,48 @@ body {
 p {
     margin-left: 10px;
     margin-right: 10px;
+}
+
+#referencetable table {
+    margin-top: 50px;
+    margin-left: 200px;
+
+    border: 1px solid black;
+    border-collapse: collapse;
+
+    padding: 7px;
+}
+
+#referencetable th{
+    border: 1px solid black;
+
+    padding: 7px;
+}
+
+#referencetable td {
+    border: 1px solid black;
+
+    padding: 7px;
+}
+
+#arithmetictable table {
+    margin-top: 50px;
+    margin-left: 550px;
+
+    border: 1px solid black;
+    border-collapse: collapse;
+
+    padding: 7px;
+}
+
+#arithmetictable th{
+    border: 1px solid black;
+
+    padding: 7px;
+}
+
+#arithmetictable td {
+    border: 1px solid black;
+
+    padding: 7px;
 }

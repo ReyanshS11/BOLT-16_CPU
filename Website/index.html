@@ -25,6 +25,208 @@
     </div>
 
     <div id="codeoutput"></div>
+
+    <div id="referencetable">
+      <table>
+
+        <tr>
+          <th>Operation</th>
+          <th>Operation Name</th>
+          <th>Documentation</th>
+          <th>Usage</th>
+          <th>Example</th>
+        </tr>
+
+        <tr>
+          <td>ldr</td>
+          <td>Load Register</td>
+          <td>Loads the value of the RAM address specified in SCR_REG into REG</td>
+          <td>ldr REG SRC_REG</td>
+          <td>ldr R0 R1</td>
+        </tr>
+
+        <tr>
+          <td>str</td>
+          <td>Store Register</td>
+          <td>Stores the value of REG into the RAM address specified in SRC_REG</td>
+          <td>str REG SRC_REG</td>
+          <td>str R0 R1</td>
+        </tr>
+
+        <tr>
+          <td>db</td>
+          <td>Define Byte</td>
+          <td>Store the value specified after the @ into REG</td>
+          <td>db REG @value</td>
+          <td>db R0 @10</td>
+        </tr>
+
+        <tr>
+          <td>sb</td>
+          <td>Store Byte</td>
+          <td>Stores the value specifed after the @ into the RAM address specified in SRC_REG</td>
+          <td>sb SRC_REG @value</td>
+          <td>sb R0 @10</td>
+        </tr>
+
+        <tr>
+          <td>arithmetic</td>
+          <td>Arithmetic Operation</td>
+          <td>Performs an arithmetic operation</td>
+          <td>arithmetic OP FLAGS</td>
+          <td>arithmetic inc R0</td>
+        </tr>
+
+        <tr>
+          <td>jmp</td>
+          <td>Jump</td>
+          <td>Jumps to the label name specified after the $</td>
+          <td>jmp LABEL</td>
+          <td>jmp $label1</td>
+        </tr>
+
+        <tr>
+          <td>jz</td>
+          <td>Jump if Zero</td>
+          <td>Jumps to the label name specified after the $ if the output of the previous operation was 0</td>
+          <td>jz LABEL</td>
+          <td>jz $label1</td>
+        </tr>
+
+        <tr>
+          <td>clear</td>
+          <td>Clear Register</td>
+          <td>Clears the value of REG</td>
+          <td>clear REG</td>
+          <td>clear R0</td>
+        </tr>
+
+        <tr>
+          <td>end</td>
+          <td>End</td>
+          <td>Stops the clock and ends the program</td>
+          <td>end</td>
+          <td>end</td>
+        </tr>
+
+        <tr>  
+          <td>label</td>
+          <td>Define Label</td>
+          <td>Defines a label with the name specified after the $</td>
+          <td>label NAME</td>
+          <td>label $label1</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="arithmetictable">
+      <table>
+
+        <tr>
+          <th>Arithmetic Operation</th>
+          <th>Operation Name</th>
+          <th>Flags</th>
+        </tr>
+
+        <tr>
+          <td>and</td>
+          <td>Bitwise AND</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>or</td>
+          <td>Bitwise OR</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>xor</td>
+          <td>Bitwise XOR</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>not</td>
+          <td>Not</td>
+          <td>DST</td>
+        </tr>
+
+        <tr>
+          <td>neg</td>
+          <td>Negate</td>
+          <td>DST</td>
+        </tr>
+
+        <tr>
+          <td>add</td>
+          <td>Add</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>sub</td>
+          <td>Subtract</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>mul</td>
+          <td>Multiply</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>div</td>
+          <td>Divide</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>inc</td>
+          <td>Increment</td>
+          <td>DST</td>
+        </tr>
+
+        <tr>
+          <td>dec</td>
+          <td>Decrement</td>
+          <td>DST</td>
+        </tr>
+
+        <tr>
+          <td>shl</td>
+          <td>Shift Left</td>
+          <td>DST DIST</td>
+        </tr>
+
+        <tr>
+          <td>shr</td>
+          <td>Shift Right</td>
+          <td>DST DIST</td>
+        </tr>
+
+        <tr>
+          <td>cmp</td>
+          <td>Compare</td>
+          <td>DST SRC</td>
+        </tr>
+
+        <tr>
+          <td>sar</td>
+          <td>Shift Right Arithmetic</td>
+          <td>DST DIST</td>
+        </tr>
+
+        <tr>
+          <td>ror</td>
+          <td>Rotate Right</td>
+          <td>DST DIST</td>
+        </tr>
+
+      </table>
+    </div>
     
   </body>
 
