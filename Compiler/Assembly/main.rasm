@@ -1,3 +1,9 @@
+label $parttwo
+    db R6 @11
+    db R2 @2
+
+    str R6 R2
+
 label $start
     db R7 @100
     db R1 @1
@@ -6,11 +12,5 @@ label $start
     str R7 R1
 
     jmp $parttwo
-
-label $parttwo
-    db R6 @11
-    db R2 @2
-
-    str R6 R2
 
 end

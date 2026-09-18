@@ -28,13 +28,15 @@ function runCode() {
             continue;
         }
 
-        lines.push(line);
+        const trimmed = line.trim();
 
-        if (line.indexOf("label") === 0) {
-            const labelName = line.substring(7);
+        if (trimmed.startsWith("label ")) {
+            const labelName = trimmed.substring(6).trim();
             compilerVariables.set(labelName, lineAddress);
+            continue;
         }
 
+        lines.push(line);
         lineAddress++;
     }
 
@@ -49,9 +51,6 @@ function runCode() {
         if (jumptoAddress) {
             i = addressToJump - 1;
             jumptoAddress = false;
-
-            line = lines[i + 1]; 
-
             continue;
         }
 

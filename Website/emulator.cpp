@@ -16,7 +16,7 @@
 
 std::unordered_map<int, std::string> RunCode()
 {
-    std::ifstream inputFile {"Compiler/Assembly/main.rasm"};
+    std::ifstream inputFile {"../Compiler/Assembly/main.rasm"};
 
     std::unordered_map<std::string, std::string> RegisterMapping {
         {"R0", "0000000000000000"},
