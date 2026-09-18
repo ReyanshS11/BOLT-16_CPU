@@ -1,11 +1,11 @@
 label $parttwo
-    db R6 @11
+    db R6 @12
     db R2 @2
 
     str R6 R2
 
 label $start
-    db R7 @100
+    db R7 @101
     db R1 @1
 
     arithmetic inc R7

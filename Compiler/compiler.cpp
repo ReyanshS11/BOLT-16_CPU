@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <vector>
 #include <unordered_map>
 
 #include <fstream>
@@ -57,119 +58,308 @@ std::unordered_map<std::string, std::string> CompilerVariables;
 std::ifstream inputFile {"Assembly/main.rasm"};
 std::ofstream outputFile {"Compiled/compiled.bin", std::ios::trunc};
 
-bool arithmetic = false;
-
-void BuildBinary(const std::string& word, std::string& binary)
+int main()
 {
-    auto isOpCode = OpCodeMapping.find(word);
-    auto isArithmetic = ArithmeticOperationMapping.find(word);
-
-    if (isOpCode != OpCodeMapping.end())
-    {
-        while (binary.size() < 16 && binary.size() > 4)
-        {
-            binary += "0";
-        }
-
-        if (binary.size() == 16)
-        {
-            outputFile << binary << "\n";
-        }
-
-        binary = OpCodeMapping[word];
-    }
-    else if (isArithmetic != ArithmeticOperationMapping.end())
-    {
-        binary += ArithmeticOperationMapping[word];
-    }
-    else
-    {
-        binary += RegisterMapping[word];
-    }
-}
-
-void findLabels()
-{
+    int lineAddress = 0;
     std::string line;
 
-    int address = 0;
+    bool jumptoAddress = false;
+    int addressToJump;
+
+    std::vector<std::string> lines;
 
     while (std::getline(inputFile, line))
     {
-        if (line.find("label") != std::string::npos)
+        if (!line.empty())
         {
-            std::bitset<16> binaryAddress {address};
-            CompilerVariables[line.erase(0, 7)] = binaryAddress.to_string();
+            if (line != "end")
+            {
+                lines.emplace_back(line);
+            }
         }
-
-        address++;
     }
 
-    inputFile.clear();
-    inputFile.seekg(0);
-}
+    int startLabelAddress = 0;
 
-int main()
-{
-    findLabels();
-
-    std::stringstream ss;
-    ss << inputFile.rdbuf();
-
-    std::string word;
-    std::string binary;
-
-    bool skip = false;
-
-    while (ss >> word)
+    for (int i = 0; i < lines.size(); i++)
     {
-        if (word.find('@') == 0)
+        if (lines[i].find("label $start") != std::string::npos)
         {
-            while (binary.size() < 16)
-            {
-                binary += "0";
-            }
+            startLabelAddress = i;
+            break;
+        }
+    }
 
-            outputFile << binary << "\n";
+    std::vector<std::string> reorderedLines;
 
-            std::bitset<16> binaryWord {std::stoi(word.erase(0, 1))};
+    for (int i = startLabelAddress; i < lines.size(); i++)
+    {
+        reorderedLines.emplace_back(lines[i]);
+    }
 
-            outputFile << binaryWord.to_string() << "\n";
+    for (int i = 0; i < startLabelAddress; i++)
+    {
+        reorderedLines.emplace_back(lines[i]);
+    }
 
-            binary = "";
+    reorderedLines.emplace_back("end");
 
+    for (const std::string& currentLine : reorderedLines)
+    {
+        std::istringstream ss(currentLine);
+
+        std::string arg;
+        std::vector<std::string> args;
+
+        while (ss >> arg)
+        {
+            args.push_back(arg);
+        }
+
+        if (args.empty())
+            continue;
+
+        if (args[0] == "label")
+        {
+            std::string labelName = args[1].substr(1);
+
+            std::bitset<16> binaryAddress(lineAddress);
+
+            CompilerVariables[labelName] = binaryAddress.to_string();
+
+            lineAddress++;
+        }
+        else if (args[0] == "db" || args[0] == "sb" ||
+                args[0] == "jmp" || args[0] == "jz")
+        {
+            lineAddress += 2;
+        }
+        else
+        {
+            lineAddress++;
+        }
+    }
+    for (int i = 0; i < reorderedLines.size(); i++)
+    {
+        std::string binary;
+
+        line = reorderedLines[i];
+
+        std::istringstream ss {line};
+
+        std::string arg;
+        std::vector<std::string> args;
+
+        while (ss >> arg) {
+            args.push_back(arg);
+        }
+
+        if (jumptoAddress)
+        {
+            i = addressToJump - 1;
+            jumptoAddress = false;
+        }
+
+        if (args[0] == "ldr")
+        {
+            std::string DST = RegisterMapping[args[1]];
+            std::string SRC = RegisterMapping[args[2]];
+
+            outputFile << OpCodeMapping[args[0]] + DST + SRC + "00000" + "\n";
             continue;
         }
-        else if (word.find('$') == 0)
-        {            
-            while (binary.size() < 16)
-            {
-                binary += "0";
-            }
+        else if (args[0] == "str")
+        {
+            std::string DST = RegisterMapping[args[1]];
+            std::string SRC = RegisterMapping[args[2]];
 
-            outputFile << binary << "\n";
+            outputFile << OpCodeMapping[args[0]] + DST + SRC + "00000" + "\n";
+            continue;
+        }
+        else if (args[0] == "db")
+        {
+            std::string REG = RegisterMapping[args[1]];
+            std::string VAL = std::bitset<16>(std::stoi(args[2].erase(0, 1))).to_string();
 
-            if (binary == "0100000000000000")
+            outputFile << OpCodeMapping[args[0]] + REG + "00000000" + "\n";
+            outputFile << VAL << "\n";
+            continue;
+        }
+        else if (args[0] == "sb")
+        {
+            std::string REG = RegisterMapping[args[1]];
+            std::string VAL = std::bitset<16>(std::stoi(args[2].erase(0, 1))).to_string();
+
+            outputFile << OpCodeMapping[args[0]] + REG + "00000000" + "\n";
+            outputFile << VAL << "\n";
+            continue;
+        }
+        else if (args[0] == "arithmetic")
+        {
+            std::string start = OpCodeMapping[args[0]];
+
+            if (args[1] == "and")
             {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
                 continue;
             }
+            else if (args[1] == "or")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
 
-            outputFile << CompilerVariables[word.erase(0, 1)] << "\n";
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "xor")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
 
-            binary = "";
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "not")
+            {
+                std::string DST = RegisterMapping[args[2]];
 
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "000" + "\n";
+                continue;
+            }
+            else if (args[1] == "neg")
+            {
+                std::string DST = RegisterMapping[args[2]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "000" + "\n";
+                continue;
+            }
+            else if (args[1] == "add")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "sub")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "mul")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "div")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "inc")
+            {
+                std::string DST = RegisterMapping[args[2]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "0000" + "\n";
+                continue;
+            }
+            else if (args[1] == "dec")
+            {
+                std::string DST = RegisterMapping[args[2]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "0000" + "\n";
+                continue;
+            }
+            else if (args[1] == "shl")
+            {
+                std::string DST = RegisterMapping[args[2]];
+
+                int dist = std::stoi(args[3].erase(0, 1));
+                std::string DIST = std::bitset<3>(dist).to_string();
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
+                continue;
+            }
+            else if (args[1] == "shr")
+            {
+                std::string DST = RegisterMapping[args[2]];
+
+                int dist = std::stoi(args[3].erase(0, 1));
+                std::string DIST = std::bitset<3>(dist).to_string();
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
+                continue;
+            }
+            else if (args[1] == "cmp")
+            {
+                std::string DST = RegisterMapping[args[2]];
+                std::string SRC = RegisterMapping[args[3]];
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
+                continue;
+            }
+            else if (args[1] == "sar")
+            {
+                std::string DST = RegisterMapping[args[2]];
+
+                int dist = std::stoi(args[3].erase(0, 1));
+                std::string DIST = std::bitset<3>(dist).to_string();
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
+                continue;
+            }
+            else if (args[1] == "ror") { 
+                std::string DST = RegisterMapping[args[2]];
+
+                int dist = std::stoi(args[3].erase(0, 1));
+                std::string DIST = std::bitset<3>(dist).to_string();
+
+                outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
+                continue;
+            }
+        }
+        else if (args[0] == "jmp")
+        {
+            outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
+            outputFile << CompilerVariables[args[1].erase(0, 1)] << "\n";
             continue;
         }
-
-        BuildBinary(word, binary);
+        else if (args[0] == "jz")
+        {
+            outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
+            outputFile << CompilerVariables[args[1].erase(0, 1)] << "\n";
+            continue;
+        }
+        else if (args[0] == "label")
+        {
+            outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
+            continue;
+        }
+        else if (args[0] == "clear")
+        {
+            outputFile << OpCodeMapping[args[0]] << RegisterMapping[args[1]] << "00000000" << "\n";
+        }
+        else if (args[0] == "end")
+        {
+            outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
+            break;
+        }
+        else
+        {
+            std::cout << "Encountered an error";
+            break;
+        }
     }
-
-    while (binary.size() < 16)
-    {
-        binary += "0";
-    }
-        
-    outputFile << binary << "\n";
-
-    outputFile.close();
 }
