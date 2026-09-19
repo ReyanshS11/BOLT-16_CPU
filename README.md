@@ -8,6 +8,8 @@ BOLT-16 is a simple CPU designed to run basic arithmetic operations and memory w
 
 You can try it out using the emulator at: [Emulator](https://reyanshs11.github.io/BOLT-16_CPU)
 
+You can find example code in `Compiler/Assembly/main.rasm`
+
 ## Or Simulate it yourself!
 
 You can simulate it locally following these steps:
