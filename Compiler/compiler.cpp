@@ -356,6 +356,10 @@ int main()
             outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
             break;
         }
+        else if (args[0].front() == ';')
+        {
+            continue;
+        }
         else
         {
             std::cout << "Encountered an error";

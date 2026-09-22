@@ -16,7 +16,6 @@ function runCode() {
     const compilerVariables = new Map();
 
     let lineAddress = 0;
-    let jumptoAddress = false;
     let addressToJump = 0;
     let previousOperationOutput = "";
 
@@ -30,8 +29,12 @@ function runCode() {
 
         const trimmed = line.trim();
 
+        if (trimmed.startsWith(";")) {
+            continue;
+        }
+
         if (trimmed.startsWith("label ")) {
-            const labelName = trimmed.substring(6).trim();
+            const labelName = trimmed.substring(7).trim();
             compilerVariables.set(labelName, lineAddress);
             continue;
         }
@@ -43,16 +46,12 @@ function runCode() {
     const toUint16 = (val) => val & 0xFFFF;
     const toBinaryString = (val) => (val & 0xFFFF).toString(2).padStart(16, '0');
 
-    for (let i = 0; i < lines.length; i++) {
+    for (let i = compilerVariables.get("start"); i < lines.length; i++) {
         let line = lines[i];
 
         const args = line.trim().split(/\s+/);
 
-        if (jumptoAddress) {
-            i = addressToJump - 1;
-            jumptoAddress = false;
-            continue;
-        }
+        console.log(args[0]);
 
         if (args[0] === "ldr") {
             const address = parseInt(registerMapping.get(args[2]), 2);
@@ -194,13 +193,25 @@ function runCode() {
         else if (args[0] === "jmp") {
             const label = args[1].substring(1);
             addressToJump = compilerVariables.get(label);
-            jumptoAddress = true;
+            
+            if (addressToJump === undefined) {
+                console.error(`Unknown label: ${label}`);
+                break;
+            }
+
+            i = addressToJump - 1;
         } 
         else if (args[0] === "jz") {
             if (previousOperationOutput === "0000000000000000") {
                 const label = args[1].substring(1);
                 addressToJump = compilerVariables.get(label);
-                jumptoAddress = true;
+                
+                if (addressToJump === undefined) {
+                    console.error(`Unknown label: ${label}`);
+                    break;
+                }
+
+                i = addressToJump - 1;
             }
         }
         else if (args[0] === "label") {
@@ -209,14 +220,12 @@ function runCode() {
         else if (args[0] === "clear") {
             registerMapping.set(args[1], "0000000000000000");
         }
+        else if (args[0] === "end") {
+            break;
+        }
         else {
-            if (args[0] === "end") {
-                break;
-            }
-            else {
-                console.log("Encountered an error");
-                break;
-            }
+            console.log(`Encountered an error at line: ${i}`);
+            return;
         }
     }
 

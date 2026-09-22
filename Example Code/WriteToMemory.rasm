@@ -1,4 +1,4 @@
-; Writes stuff to memory
+; This code writes the number 102 to address #1 and the number 12 to address #2
 
 label $parttwo
     db R6 @2

@@ -1,0 +1,17 @@
+; This code adds the numbers 1 through 5 and stores the result in address #0
+
+label $start
+    db R0 @5
+    db R1 @4
+    db R2 @3
+    db R3 @2
+
+    arithmetic add R0 R1
+    arithmetic add R0 R2
+    arithmetic add R0 R3
+    arithmetic inc R0
+
+    ; Since the value of any register is 0 by default, we can use any unused register as SRC_REG
+    str R0 R5
+
+    end
