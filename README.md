@@ -8,7 +8,7 @@ BOLT-16 is a simple 16-bit CPU designed to run basic arithmetic operations and m
 
 You can try it out using the emulator at: [Emulator](https://reyanshs11.github.io/BOLT-16_CPU)
 
-You can find example code in `Compiler/Assembly/main.rasm`
+You can find example code in `./Example Code`
 
 ### How to use the Emulator
 
@@ -29,8 +29,8 @@ You can write code in the code area (or copy-paste it from the example code) and
 You can simulate it locally following these steps:
 1. Download Logisim-Evolution here: [Logisim Github Link](https://github.com/logisim-evolution/logisim-evolution)
 2. Clone this repo
-3. Write code in `Compiler/Assembly/main.rasm` and compile it using `compiler.cpp` and then `hexadecimal_converter.cpp`
-4. Load `CPU.circ` into Logisim and load `compiled.hex` into InstructionMemory
+3. Write code in `Compiler/Assembly/main.rasm` and compile it using `Compiler/compiler.cpp` and then `hexadecimal_converter.cpp`
+4. Load `CPU.circ` into Logisim and load `Compiler/Compiled/compiled.hex` into InstructionMemory
 
 ## CPU Specs
 
