@@ -15,7 +15,7 @@ body {
     left: 0;
     right: 0;
 
-    background-color: gold;
+    background-color: black;
 
     height: 50px;
 
@@ -24,8 +24,6 @@ body {
 
     justify-content: center;
     align-items: center;
-
-    color: white;
 }
 
 .codearea {
@@ -174,4 +172,32 @@ p {
     border: 1px solid black;
 
     padding: 7px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+#home {
+    margin-right: 900px;
+}
+
+#hometext {
+    color: white;
+}
+
+#extra_pages {
+    display: flex;
+    flex-direction: row;
+}
+
+#pgtitle {
+    font-size: large;
+    padding-left: 30px;
+    text-decoration: underline;
+}
+
+#examplecodeinfo {
+    text-align: center;
 }
