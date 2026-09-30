@@ -1,7 +1,11 @@
 body {
-  background-color: aliceblue; 
+  background-color: white;
+
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
   
-  background-size: 40px 40px;
+  background-size: 50px 50px;
 }
 
 #taskbar {
@@ -102,6 +106,8 @@ body {
     
     column-gap: 20px; 
     align-content: start;
+    
+    text-align: center;
 }
 
 #codeoutput p {
@@ -110,6 +116,16 @@ body {
     padding-bottom: 10px;
     
     border-bottom: 1px solid black; 
+}
+
+#codeoutput h3 {
+    margin-top: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid black;
+}
+
+#codeoutput h4 {
+    padding-right: 3px;
 }
 
 #codeoutput::after {
