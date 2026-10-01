@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title>BOLT-16 CPU Emulator</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </head>
 
   <body>
@@ -23,6 +23,10 @@
     </nav>
 
     <div class="codearea">
+      <div id="linenumbers">
+        <p>1</p>
+      </div>
+      
       <textarea id="code" autocomplete="off" spellcheck="false" placeholder="Write your assembly code here. Go to assembly reference for help."></textarea>
 
       <button id="runcodebutton" onclick="runCode()">
@@ -32,10 +36,10 @@
     </div>
 
     <div id="codeoutput">
-        <h3>RAM (Binary)</h3>
-        <h3>RAM (Decimal)</h3>
-        <h4>Your data memory output will appear here in binary form.</h4>
-        <h4>Your data memory output will appear here in decimal form.</h4>
+        <p>ADDRESS: BINARY</p>
+        <p>ADDRESS: DECIMAL</p>
+        <h4>Your data memory output will appear here in the format above.</h4>
+        <h4>Your data memory output will appear here in the format above.</h4>
     </div>
     
   </body>

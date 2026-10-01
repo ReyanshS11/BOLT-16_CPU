@@ -1,5 +1,5 @@
 body {
-  background-color: white;
+  background-color: lightblue;
 
   background-image:
     linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
@@ -19,7 +19,7 @@ body {
     left: 0;
     right: 0;
 
-    background-color: black;
+    background-color: rgb(0, 171, 228);
 
     height: 50px;
 
@@ -35,7 +35,36 @@ body {
     position: relative;
 }
 
+#linenumbers {
+    position: absolute;
+
+    top: 52px;
+    left: 293px;
+
+    width: 30px;
+    height: 502px;
+
+    text-align: center;
+
+    background-color: white;
+
+    border-radius: 6px;
+
+    padding-right: 5px;
+
+    overflow: hidden;
+}
+
+#linenumbers p {
+    margin: 0;
+    line-height: 25px;
+}
+
 #code {
+    display: inline-block;
+
+    vertical-align: top;
+
     position: absolute;
 
     background-color: white;
@@ -49,16 +78,20 @@ body {
     font-size: 16px;
 
     margin-top: 50px;
-    margin-left: 300px;
+    margin-left: 343px;
 
     align-items: center;
+
+    resize: none;
+
+    line-height: 25px;
 }
 
 #runcodebutton {
     margin-top: 560px;
-    margin-left: 300px;
+    margin-left: 343px;
 
-    background-color: red;
+    background-color: rgb(0, 171, 228);
 
     color: white;
 
@@ -87,7 +120,7 @@ body {
 
 #codeoutput {
     margin-top: -530px;
-    margin-left: 800px;
+    margin-left: 843px;
 
     position: absolute;
 
@@ -118,12 +151,6 @@ body {
     border-bottom: 1px solid black; 
 }
 
-#codeoutput h3 {
-    margin-top: 8px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid black;
-}
-
 #codeoutput h4 {
     padding-right: 3px;
 }
@@ -147,45 +174,47 @@ p {
 }
 
 #referencetable table {
-    margin-top: 50px;
-    margin-left: 200px;
+    background-color: white;
 
-    border: 1px solid black;
-    border-collapse: collapse;
+    margin-top: 50px;
+    margin-left: 142.5px;
+
+    border: 5px solid rgb(0, 171, 228);
 
     padding: 7px;
 }
 
 #referencetable th{
-    border: 1px solid black;
+    border: 1px solid rgb(0, 171, 228);
 
     padding: 7px;
 }
 
 #referencetable td {
-    border: 1px solid black;
+    border: 1px solid rgb(0, 171, 228);
 
     padding: 7px;
 }
 
 #arithmetictable table {
-    margin-top: 50px;
-    margin-left: 550px;
+    background-color: white;
 
-    border: 1px solid black;
-    border-collapse: collapse;
+    margin-top: 50px;
+    margin-left: 492.5px;
+
+    border: 5px solid rgb(0, 171, 228);
 
     padding: 7px;
 }
 
 #arithmetictable th{
-    border: 1px solid black;
+    border: 1px solid rgb(0, 171, 228);
 
     padding: 7px;
 }
 
 #arithmetictable td {
-    border: 1px solid black;
+    border: 1px solid rgb(0, 171, 228);
 
     padding: 7px;
 }

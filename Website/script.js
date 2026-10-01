@@ -244,3 +244,26 @@ function runCode() {
         outputDiv.appendChild(newP2);
     });
 }
+
+const lineNumbers = document.getElementById("linenumbers");
+const textArea = document.querySelector("#code");
+
+textArea.addEventListener("input", function() {
+    updateLineNumbers();
+});
+
+textArea.addEventListener("scroll", function() {
+    lineNumbers.scrollTop = textArea.scrollTop;
+})
+
+function updateLineNumbers() {
+    const numNewLines = textArea.value.split('\n').length;
+
+    lineNumbers.replaceChildren();
+    for (let i = 0; i < numNewLines; i++) {
+        const newLine = document.createElement("p");
+        newLine.textContent = (i + 1).toString();
+
+        lineNumbers.appendChild(newLine);
+    }
+}
