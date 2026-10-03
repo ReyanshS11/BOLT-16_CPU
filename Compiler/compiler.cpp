@@ -20,7 +20,8 @@ std::unordered_map<std::string, std::string> OpCodeMapping {
     {"jz", "00110"},
     {"clear", "00111"},
     {"end", "01000"},
-    {"label", "01001"}
+    {"label", "01001"},
+    {"scrnwrt", "01010"}
 };
 
 std::unordered_map<std::string, std::string> RegisterMapping {
@@ -31,7 +32,7 @@ std::unordered_map<std::string, std::string> RegisterMapping {
     {"R4", "100"},
     {"R5", "101"},
     {"R6", "110"},
-    {"R7", "111"}    
+    {"R7", "111"}   
 };
 
 std::unordered_map<std::string, std::string> ArithmeticOperationMapping {
@@ -166,7 +167,6 @@ int main()
             std::string SRC = RegisterMapping[args[2]];
 
             outputFile << OpCodeMapping[args[0]] + DST + SRC + "00000" + "\n";
-            continue;
         }
         else if (args[0] == "str")
         {
@@ -174,7 +174,6 @@ int main()
             std::string SRC = RegisterMapping[args[2]];
 
             outputFile << OpCodeMapping[args[0]] + DST + SRC + "00000" + "\n";
-            continue;
         }
         else if (args[0] == "db")
         {
@@ -183,7 +182,6 @@ int main()
 
             outputFile << OpCodeMapping[args[0]] + REG + "00000000" + "\n";
             outputFile << VAL << "\n";
-            continue;
         }
         else if (args[0] == "sb")
         {
@@ -192,7 +190,6 @@ int main()
 
             outputFile << OpCodeMapping[args[0]] + REG + "00000000" + "\n";
             outputFile << VAL << "\n";
-            continue;
         }
         else if (args[0] == "arithmetic")
         {
@@ -204,7 +201,6 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "or")
             {
@@ -212,7 +208,6 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "xor")
             {
@@ -220,21 +215,18 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "not")
             {
                 std::string DST = RegisterMapping[args[2]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "000" + "\n";
-                continue;
             }
             else if (args[1] == "neg")
             {
                 std::string DST = RegisterMapping[args[2]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "000" + "\n";
-                continue;
             }
             else if (args[1] == "add")
             {
@@ -242,7 +234,6 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "sub")
             {
@@ -250,7 +241,6 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "mul")
             {
@@ -258,7 +248,6 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "div")
             {
@@ -266,21 +255,18 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "inc")
             {
                 std::string DST = RegisterMapping[args[2]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "0000" + "\n";
-                continue;
             }
             else if (args[1] == "dec")
             {
                 std::string DST = RegisterMapping[args[2]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + "0000" + "\n";
-                continue;
             }
             else if (args[1] == "shl")
             {
@@ -290,7 +276,6 @@ int main()
                 std::string DIST = std::bitset<3>(dist).to_string();
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
-                continue;
             }
             else if (args[1] == "shr")
             {
@@ -300,7 +285,6 @@ int main()
                 std::string DIST = std::bitset<3>(dist).to_string();
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
-                continue;
             }
             else if (args[1] == "cmp")
             {
@@ -308,7 +292,6 @@ int main()
                 std::string SRC = RegisterMapping[args[3]];
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + SRC + "\n";
-                continue;
             }
             else if (args[1] == "sar")
             {
@@ -318,7 +301,6 @@ int main()
                 std::string DIST = std::bitset<3>(dist).to_string();
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
-                continue;
             }
             else if (args[1] == "ror") { 
                 std::string DST = RegisterMapping[args[2]];
@@ -327,29 +309,37 @@ int main()
                 std::string DIST = std::bitset<3>(dist).to_string();
 
                 outputFile << start + ArithmeticOperationMapping[args[1]] + DST + DIST + "\n";
-                continue;
             }
         }
         else if (args[0] == "jmp")
         {
             outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
             outputFile << CompilerVariables[args[1].erase(0, 1)] << "\n";
-            continue;
         }
         else if (args[0] == "jz")
         {
             outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
             outputFile << CompilerVariables[args[1].erase(0, 1)] << "\n";
-            continue;
         }
         else if (args[0] == "label")
         {
             outputFile << OpCodeMapping[args[0]] << "00000000000" << "\n";
-            continue;
         }
         else if (args[0] == "clear")
         {
             outputFile << OpCodeMapping[args[0]] << RegisterMapping[args[1]] << "00000000" << "\n";
+        }
+        else if (args[0] == "scrnwrt")
+        {
+            outputFile << OpCodeMapping[args[0]] << RegisterMapping[args[1]] <<  RegisterMapping[args[2]] << "00000" << "\n";
+
+            std::bitset<8> RED = std::stoi(args[3].erase(0, 1));
+            std::bitset<8> GREEN = std::stoi(args[4].erase(0, 1));
+            std::bitset<8> BLUE = std::stoi(args[5].erase(0, 1));
+
+            std::string RGB565 = ((RED >> 3) << 11 | ((GREEN >> 2) << 5) | (BLUE >> 3)).to_string();
+
+            outputFile << RGB565 << "\n";
         }
         else if (args[0] == "end")
         {

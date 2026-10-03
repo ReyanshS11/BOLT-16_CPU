@@ -173,6 +173,23 @@ p {
     margin-right: 10px;
 }
 
+#screen {
+    display: none;
+    grid-template-columns: repeat(128, 1fr);
+    grid-template-rows: repeat(128, 1fr);
+
+    position: relative;
+
+    width: 500px;
+    height: 500px;
+
+    border: 2px solid black;
+}
+
+.pixel {
+    background-color: black;
+}
+
 #referencetable table {
     background-color: white;
 

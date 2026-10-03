@@ -1,4 +1,18 @@
+const screen = document.querySelector("#screen");
+const totalPixels = 128 * 128;
+
+for (let i = 0; i < totalPixels; i++) {
+    const pixel = document.createElement('div');
+    pixel.classList.add('pixel');
+
+    screen.appendChild(pixel);
+}
+
 function runCode() {
+    for (let pixel of screen.children) {
+        pixel.style.backgroundColor = 'black';
+    }
+
     const code = document.getElementById("code").value;
 
     const registerMapping = new Map([
@@ -13,6 +27,8 @@ function runCode() {
     ]);
 
     const dataMemory = new Map();
+    const screenMemory = new Map();
+
     const compilerVariables = new Map();
 
     let lineAddress = 0;
@@ -50,8 +66,6 @@ function runCode() {
         let line = lines[i];
 
         const args = line.trim().split(/\s+/);
-
-        console.log(args[0]);
 
         if (args[0] === "ldr") {
             const address = parseInt(registerMapping.get(args[2]), 2);
@@ -220,6 +234,15 @@ function runCode() {
         else if (args[0] === "clear") {
             registerMapping.set(args[1], "0000000000000000");
         }
+        else if (args[0] == "scrnwrt") {
+            const X_coord = parseInt(registerMapping.get(args[1]), 2);
+            const Y_coord = parseInt(registerMapping.get(args[2]), 2);
+
+            const address = Y_coord * 128 + X_coord;
+
+            screenMemory.set(address, [args[3].substring(1), args[4].substring(1), args[5].substring(1)]);
+            console.log(screenMemory.get(address));
+        }
         else if (args[0] === "end") {
             break;
         }
@@ -233,6 +256,7 @@ function runCode() {
     outputDiv.replaceChildren();
     
     const sortedDataMemory = new Map([...dataMemory.entries()].sort((a, b) => a[0] - b[0]));
+    const sortedScreenMemory = new Map([...screenMemory.entries()].sort((a, b) => a[0] - b[0]));
 
     sortedDataMemory.forEach((value, address) => {
         const newP = document.createElement("p");
@@ -242,6 +266,14 @@ function runCode() {
         const newP2 = document.createElement("p");
         newP2.textContent = `${address.toString().padStart(4, '0')}: ${parseInt(value, 2)}`;
         outputDiv.appendChild(newP2);
+    });
+
+    if (screenMemory.size > 0) {
+        screen.style.display = 'grid';
+    }
+
+    sortedScreenMemory.forEach((value, address) => {
+        screen.children[address].style.backgroundColor = `rgb(${value[0]}, ${value[1]}, ${value[2]})`;
     });
 }
 
@@ -265,5 +297,36 @@ function updateLineNumbers() {
         newLine.textContent = (i + 1).toString();
 
         lineNumbers.appendChild(newLine);
+    }
+}
+
+dragElement(document.getElementById("screen"));
+
+function dragElement(element) {
+    let offsetX = 0;
+    let offsetY = 0;
+
+    element.onmousedown = startDragging;
+
+    function startDragging(e) {
+        e.preventDefault();
+
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+
+        document.onmousemove = dragging;
+        document.onmouseup = stopDragging;
+    }
+
+    function dragging(e) {
+        e.preventDefault();
+
+        element.style.left = (e.clientX - offsetX) + "px";
+        element.style.top = (e.clientY - offsetY) + "px";
+    }
+
+    function stopDragging() {
+        document.onmousemove = null;
+        document.onmouseup = null;
     }
 }
