@@ -9,6 +9,8 @@ for (let i = 0; i < totalPixels; i++) {
 }
 
 function runCode() {
+    screen.style.display = 'none';
+
     for (let pixel of screen.children) {
         pixel.style.backgroundColor = 'black';
     }
