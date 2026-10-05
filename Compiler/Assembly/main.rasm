@@ -1,16 +1,50 @@
-; Writes stuff to memory
+; Draws a rectangle in green
 
-label $parttwo
-    db R6 @2
-    sb R6 @12
-
-    end
-
+; Rectangle
 label $start
-    db R7 @101
-    db R1 @1
+    db R0 @10
+    db R1 @10
 
-    arithmetic inc R7
-    str R7 R1
+label $rect_top
+    scrnwrt R0 R1 @20 @255 @20
 
-    jmp $parttwo
+    db R4 @29
+    arithmetic sub R4 R0
+    jz $rect_sides
+
+    arithmetic inc R0
+    jmp $rect_top
+
+
+label $rect_sides
+    db R0 @10
+    db R1 @11
+
+label $rect_sidesloop
+    scrnwrt R0 R1 @20 @255 @20
+
+    db R0 @29
+    scrnwrt R0 R1 @20 @255 @20
+
+    db R4 @38
+    arithmetic sub R4 R1
+    jz $rect_bottom
+
+    arithmetic inc R1
+    db R0 @10
+    jmp $rect_sidesloop
+
+
+label $rect_bottom
+    db R0 @10
+    db R1 @39
+
+label $rect_bottomloop
+    scrnwrt R0 R1 @20 @255 @20
+
+    db R4 @29
+    arithmetic sub R4 R0
+    jz $square_start
+
+    arithmetic inc R0
+    jmp $rect_bottomloop
