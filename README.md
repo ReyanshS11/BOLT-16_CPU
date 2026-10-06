@@ -2,7 +2,7 @@
 
 BOLT-16 is a simple 16-bit CPU designed to run basic arithmetic operations and memory writing/reading using a custom assembly language.
 
-![BOLT-16 CPU Design](Screenshots/CPU.png)
+![BOLT-16 CPU Design](Screenshots/FinalCPU.png)
 
 ## Try it!
 
@@ -12,10 +12,10 @@ You can find example code in `./Example Code`
 
 ### How to use the Emulator
 
-The emulator is split into 3 main sections:
+The main emulator page is split into 3 main sections:
 * Code area (left)
 * Output area (right)
-* Reference tables (below code area)
+* Screen (appears below code area after writing to screen memory)
 
 You can write code in the code area (or copy-paste it from the example code) and click `Run` to run the emulator. You will see your output on the right. The output is formatted ADDRESS: VALUE, with the left column have the binary representation and the right column having a decimal representation.
 
@@ -38,6 +38,7 @@ You can simulate it locally following these steps:
 * 8 CPU resident registers
 * Read/Write memory
 * 16 built-in ALU operations
+* Screen write functionality
 
 ## How and Why I Built it
 

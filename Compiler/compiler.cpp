@@ -333,12 +333,12 @@ int main()
         {
             outputFile << OpCodeMapping[args[0]] << RegisterMapping[args[1]] <<  RegisterMapping[args[2]] << "00000" << "\n";
 
-            std::bitset<8> RED = std::stoi(args[3].erase(0, 1));
-            std::bitset<8> GREEN = std::stoi(args[4].erase(0, 1));
-            std::bitset<8> BLUE = std::stoi(args[5].erase(0, 1));
+            std::bitset<16> RED = std::stoi(args[3].erase(0, 1));
+            std::bitset<16> GREEN = std::stoi(args[4].erase(0, 1));
+            std::bitset<16> BLUE = std::stoi(args[5].erase(0, 1));
 
             std::string RGB565 = ((RED >> 3) << 11 | ((GREEN >> 2) << 5) | (BLUE >> 3)).to_string();
-
+            
             outputFile << RGB565 << "\n";
         }
         else if (args[0] == "end")
