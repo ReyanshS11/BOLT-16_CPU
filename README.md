@@ -38,6 +38,7 @@ You can simulate it locally following these steps:
 * 8 CPU resident registers
 * Read/Write memory
 * 16 built-in ALU operations
+* 128x128 pixel screen
 * Screen write functionality
 
 ## How and Why I Built it
