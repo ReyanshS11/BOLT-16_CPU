@@ -40,11 +40,3 @@ You can simulate it locally following these steps:
 * 16 built-in ALU operations
 * 128x128 pixel screen
 * Screen write functionality
-
-## How and Why I Built it
-
-* Logsim-Evolution to design main circuit
-* C++ to build compiler and emulator V1
-* HTML/CSS/JS to build emulator V2 and website
-
-I used Logisim-Evolution to build the main CPU circuit, but I realized that it's not the easiest to setup and run, especially if you don't have much knowledge about this kind of thing. Because of that, I ended up making an emulator website so that anyone can run it without downloading anything.
